@@ -11,6 +11,8 @@ spec:
     kind: ElasticWeb
     listKind: ElasticWebList
     plural: elasticwebs
+    shortNames:
+    - ew
     singular: elasticweb
   scope: Namespaced
   versions:

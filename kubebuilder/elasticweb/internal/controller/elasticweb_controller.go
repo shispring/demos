@@ -26,6 +26,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/client-go/tools/record"
 	"k8s.io/utils/ptr"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -54,7 +55,8 @@ const (
 // ElasticWebReconciler reconciles a ElasticWeb object
 type ElasticWebReconciler struct {
 	client.Client
-	Scheme *runtime.Scheme
+	Scheme      *runtime.Scheme
+	EventRecord record.EventRecorder
 }
 
 var reconciler = ctrl.Log.WithName("reconciler")
@@ -182,6 +184,10 @@ func (r *ElasticWebReconciler) Reconcile(ctx context.Context, req ctrl.Request) 
 		// 返回错误信息给外部
 		return ctrl.Result{}, err
 	}
+
+	defer func() {
+		r.EventRecord.Event(instance, corev1.EventTypeNormal, "reconcile once done", "OK")
+	}()
 
 	return ctrl.Result{}, nil
 }
@@ -370,7 +376,7 @@ func updateStatus(ctx context.Context, r *ElasticWebReconciler, elasticWeb *elas
 
 	log.Info(fmt.Sprintf("singlePodQPS [%d], replicas [%d], realQPS[%d]", singlePodQPS, replicas, *(elasticWeb.Status.RealQPS)))
 
-	if err := r.Update(ctx, elasticWeb); err != nil {
+	if err := r.Status().Update(ctx, elasticWeb); err != nil {
 		log.Error(err, "update instance error")
 		return err
 	}

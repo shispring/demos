@@ -47,6 +47,7 @@ type ElasticWebStatus struct {
 
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
+// +kubebuilder:resource:shortName=ew
 
 // ElasticWeb is the Schema for the elasticwebs API
 type ElasticWeb struct {

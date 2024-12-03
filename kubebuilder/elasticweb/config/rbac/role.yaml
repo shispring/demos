@@ -1,9 +1,7 @@
-
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  creationTimestamp: null
   name: manager-role
 rules:
 - apiGroups:
@@ -42,6 +40,12 @@ rules:
   - patch
   - update
   - watch
+- apiGroups:
+  - elasticweb.com.bolingcavalry
+  resources:
+  - elasticwebs/finalizers
+  verbs:
+  - update
 - apiGroups:
   - elasticweb.com.bolingcavalry
   resources:

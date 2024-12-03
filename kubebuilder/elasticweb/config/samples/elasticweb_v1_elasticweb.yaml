@@ -1,18 +1,20 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: dev
+  name: elasticweb-test
   labels:
-    name: dev
+    name: elasticweb-test
 ---
 apiVersion: elasticweb.com.bolingcavalry/v1
 kind: ElasticWeb
 metadata:
-  namespace: dev
+  namespace: elasticweb-test
+  labels:
+    app.kubernetes.io/name: elasticweb
+    app.kubernetes.io/managed-by: kustomize
   name: elasticweb-sample
 spec:
-  # Add fields here
-  image: tomcat:8.0.18-jre8
+  image: swr.cn-north-4.myhuaweicloud.com/ddn-k8s/docker.io/tomcat:8.0
   port: 30003
-  singlePodQPS: 1500
-  # totalQPS: 600
+  singlePodQPS: 500
+  totalQPS: 600

@@ -16,5 +16,5 @@ metadata:
 spec:
   image: swr.cn-north-4.myhuaweicloud.com/ddn-k8s/docker.io/tomcat:8.0
   port: 30003
-  singlePodQPS: 500
-  totalQPS: 600
+  singlePodQPS: 900
+  #totalQPS: 600

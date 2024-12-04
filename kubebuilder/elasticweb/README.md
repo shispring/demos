@@ -113,12 +113,41 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 
+## 一些命令
+```
+#修改单个pod的QPS
 kubectl patch elasticweb elasticweb-sample \
 -n elasticweb-test \
 --type merge \
 --patch "$(cat config/samples/update_single_pod_qps.yaml)"
 
+#修改总值
 kubectl patch elasticweb elasticweb-sample \
 -n elasticweb-test \
 --type merge \
 --patch "$(cat config/samples/update_total_qps.yaml)"
+
+##生成webhook
+kubebuilder create webhook \
+--group elasticweb \
+--version v1 \
+--kind ElasticWeb \
+--defaulting \
+--programmatic-validation
+
+## 删除资源
+kubectl delete ew elasticweb-sample
+
+## 删除controller
+./bin/kustomize build config/default | kubectl apply -f -
+
+##删除CRD
+make uninstall
+
+
+##部署CRD
+make install
+```
+
+
+
